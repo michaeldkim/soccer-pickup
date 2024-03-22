@@ -19,6 +19,7 @@ const leagues: League[] = [
 const LeaguesPage: React.FC = () => {
     const [selectedLeague, setSelectedLeague] = useState<League>(leagues[0]);
 
+    
     return (
         <div className='m-10'>
             <h1 className="text-2xl font-bold">Leagues</h1>
