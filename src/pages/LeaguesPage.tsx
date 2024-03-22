@@ -1,6 +1,8 @@
 import React, { Fragment, useState } from 'react';
-import { Listbox, Transition } from "@headlessui/react";
+import { Listbox, Transition, Tab } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
+
+import './LeaguesPage.css'
 
 interface League {
     id: number;
@@ -19,7 +21,7 @@ const leagues: League[] = [
 const LeaguesPage: React.FC = () => {
     const [selectedLeague, setSelectedLeague] = useState<League>(leagues[0]);
 
-    
+
     return (
         <div className='m-10'>
             <h1 className="text-2xl font-bold">Leagues</h1>
@@ -73,6 +75,39 @@ const LeaguesPage: React.FC = () => {
                         </Transition>
                     </div>
                 </Listbox>
+            </div>
+
+            <div className='mt-8'>
+                <Tab.Group>
+                    <div className='bg-blue-500 rounded-t-xl p-5'>
+                        <h1 className='text-white text-xl'>{selectedLeague.name}</h1>
+                        <h2 className='text-gray-300'>Week 2 of 4</h2>
+                    </div>
+                    <Tab.List className="flex p-1 space-x-1 bg-blue-500 rounded-b-xl">
+                        {['Matches', 'Standing', 'Players'].map((category) => (
+                            <Tab
+                                key={category}
+                                className={({ selected }) =>
+                                    `w-full py-2.5 text-sm leading-5 font-medium rounded-lg transition-colors duration-150
+                                    ${selected ? 'bg-blue-700 text-white' : 'bg-blue-900 text-blue-300'}`
+                                }
+                            >
+                                {category}
+                            </Tab>
+                        ))}
+                    </Tab.List>
+                    <Tab.Panels className="mt-2">
+                        <Tab.Panel>
+                            {/* Content for Matches */}
+                        </Tab.Panel>
+                        <Tab.Panel>
+                            {/* Content for Standing */}
+                        </Tab.Panel>
+                        <Tab.Panel>
+                            {/* Content for Players */}
+                        </Tab.Panel>
+                    </Tab.Panels>
+                </Tab.Group>
             </div>
         </div>
     );
