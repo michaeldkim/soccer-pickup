@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Listbox, Transition, Tab } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
@@ -20,7 +20,26 @@ const leagues: League[] = [
 
 const LeaguesPage: React.FC = () => {
     const [selectedLeague, setSelectedLeague] = useState<League>(leagues[0]);
+    const [leagueData, setLeagueData] = useState<League>();
 
+    useEffect(() => {
+        console.log(process.env.REACT_APP_API_URL)
+
+        async function fetchData() {
+            try {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}`)
+                if (!response.ok) {
+                    throw new Error('Network response was not ok')
+                }
+                const result = await response.json();
+                console.log(result)
+            } catch (error) {
+                console.error('Error fetching data:', error)
+            }
+        }
+
+        fetchData();
+    }, [])
 
     return (
         <div className='m-10'>
