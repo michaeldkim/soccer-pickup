@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Navigation } from './components';
-import { HomePage, AboutPage, LoginPage, LeaguesPage } from './pages';
+import { HomePage, AboutPage, LoginPage, LeaguesPage, RegisterPage, NotFound } from './pages';
 
 import './App.css';
 
