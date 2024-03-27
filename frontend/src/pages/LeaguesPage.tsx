@@ -21,7 +21,8 @@ const leagues: League[] = [
 const LeaguesPage: React.FC = () => {
     const [selectedLeague, setSelectedLeague] = useState<League>(leagues[0]);
     const [leagueData, setLeagueData] = useState<League>();
-
+    const endpoint = process.env.REACT_APP_API_URL;
+    
     useEffect(() => {
         console.log(process.env.REACT_APP_API_URL)
 

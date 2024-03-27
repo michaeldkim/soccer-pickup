@@ -40,12 +40,10 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'corsheaders',
-    'posts.apps.PostsConfig',
+    'leagues',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

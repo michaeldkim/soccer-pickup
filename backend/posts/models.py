@@ -1,6 +1,7 @@
 from django.db import models
 import string
 import random
+import uuid
 
 def generate_unique_code():
     length = 6
@@ -15,6 +16,11 @@ class League(models.Model):
     code = models.CharField(max_length=8, default="", unique=True )
     name = models.CharField(max_length=100)
     max_teams = models.IntegerField(default=8)
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = str(uuid.uuid4()).replace("-","").upper()[:12]
+        super().save(*args, **kwargs)
 
 class Player(models.Model):
     first_name = models.CharField(max_length=50)
