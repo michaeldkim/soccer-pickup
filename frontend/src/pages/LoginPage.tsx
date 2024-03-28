@@ -3,21 +3,12 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ProtectedRoute } from '../components'
 import RegisterPage  from './RegisterPage'
 import NotFound from './NotFound'
+import Form from "../components/Form"
 
-interface LoginForm {
+/* interface LoginForm {
   username: string;
   password: string;
 }
-
-/* function Logout() {
-  localStorage.clear()
-  return <Navigate to="/login" />
-}
-
-function RegisterAndLogout() {
-  localStorage.clear()
-  return <RegisterPage />
-} */
 
 const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState<LoginForm>({ username: '', password: '' });
@@ -77,6 +68,9 @@ const LoginPage: React.FC = () => {
       </form>
     </div>
   );
-};
+}; */
 
+const LoginPage: React.FC = () => {
+  return <Form route="/api/token/" method="login" />
+}
 export default LoginPage;

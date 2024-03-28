@@ -1,11 +1,8 @@
 import React from 'react';
+import Form from "../components/Form"
 
 const RegisterPage: React.FC = () => {
-  return (
-    <div>
-      <h1>REGISTER PAGE</h1>
-    </div>
-  );
+  return <Form route="/api/user/refresh" method="register" />
 };
 
 export default RegisterPage;
