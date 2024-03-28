@@ -15,5 +15,5 @@ class UserSerializer(serializers.ModelSerializer):
 class LeagueSerializer(serializers.ModelSerializer):
     class Meta:
         model = League
-        fields = ["id", "title", "content", "max_teams", "league"]
+        fields = ["id", "title", "content", "max_teams"]
         extra_kwargs = {"author": {"read_only": True}}

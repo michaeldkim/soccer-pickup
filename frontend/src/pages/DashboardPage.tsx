@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import api from "../api";
+import axios from "axios"
+import LeagueList from "../components/LeagueList"
 
 interface League {
-    id: number;
-    title: string;
-    content: string;
+  id: number;
+  title: string;
+  content: string;
 }
 
 const DashboardPage: React.FC = () => {
@@ -20,8 +22,16 @@ const DashboardPage: React.FC = () => {
     api
       .get("/api/leagues/")
       .then((res) => res.data)
-      .then((data) => {setLeagues(data); console.log(data)})
-      .catch((err: Error) => alert(err.message));
+      .then((data) => { setLeagues(data); console.log(data) })
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          // If the error is an Axios error, you can get the detailed request and response.
+          alert(`Error: ${error.response?.status} - ${error.response?.statusText}`);
+        } else {
+          // If it's not an Axios error, it might be a more systemic issue (network failure, etc.)
+          alert(error);
+        }
+      })
   }
 
   const deleteLeague = (id: number) => {
@@ -32,25 +42,73 @@ const DashboardPage: React.FC = () => {
         else alert("Failed to make League")
         getLeagues();
       })
-      .catch((err) => alert(err));
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          // If the error is an Axios error, you can get the detailed request and response.
+          alert(`Error: ${error.response?.status} - ${error.response?.statusText}`);
+        } else {
+          // If it's not an Axios error, it might be a more systemic issue (network failure, etc.)
+          alert(error);
+        }
+      })
   }
 
-  const createLeague = (e) => {
+  const createLeague = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     api
-      .post("/api/leagues", {content, title})
+      .post("/api/leagues/", { content, title })
       .then((res) => {
         if (res.status === 201) alert("League created!");
         else alert("Failed to make league.");
         getLeagues();
       })
-      .catch((err) => alert(err))
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          // If the error is an Axios error, you can get the detailed request and response.
+          alert(`Error: ${error.response?.status} - ${error.response?.statusText}`);
+        } else {
+          // If it's not an Axios error, it might be a more systemic issue (network failure, etc.)
+          alert(error);
+        }
+      })
   }
 
   return (
     <div>
-      <h1>Welcome to the Soccer Team Management Dashboard</h1>
-      <p>Manage your teams, schedule matches, and keep track of standings all in one place.</p>
+      <div className='bg-purple'>
+        <h1>Welcome to the Soccer Team Management Dashboard</h1>
+        <p>Manage your teams, schedule matches, and keep track of standings all in one place.</p>
+      </div>
+      <div>
+        <h2>Leagues</h2>
+        {leagues.map((league) => (
+          <LeagueList league={league} onDelete={deleteLeague} key={league.id} />
+        ))}
+      </div>
+      <h2>Create a League</h2>
+      <form onSubmit={createLeague}>
+        <label htmlFor='title'>Title:</label>
+        <br />
+        <input
+          type="text"
+          id="title"
+          name="title"
+          required
+          onChange={(e) => setTitle(e.target.value)}
+          value={title}
+        />
+
+        <label htmlFor='content'>Content:</label>
+        <br />
+        <textarea
+          id="content"
+          name="content"
+          required
+          onChange={(e) => setContent(e.target.value)}
+        ></textarea>
+        <br />
+        <input type='submit' value='Submit'></input>
+      </form>
     </div>
   );
 };
