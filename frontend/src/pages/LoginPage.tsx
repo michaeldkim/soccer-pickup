@@ -1,9 +1,23 @@
 import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { ProtectedRoute } from '../components'
+import RegisterPage  from './RegisterPage'
+import NotFound from './NotFound'
 
 interface LoginForm {
   username: string;
   password: string;
 }
+
+/* function Logout() {
+  localStorage.clear()
+  return <Navigate to="/login" />
+}
+
+function RegisterAndLogout() {
+  localStorage.clear()
+  return <RegisterPage />
+} */
 
 const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState<LoginForm>({ username: '', password: '' });

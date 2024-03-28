@@ -1,20 +1,40 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Navigation } from './components';
-import { HomePage, AboutPage, LoginPage, LeaguesPage, RegisterPage, NotFound } from './pages';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { NavigationBar, ProtectedRoute } from './components';
+import { HomePage, AboutPage, LoginPage, LeaguesPage, RegisterPage, NotFound, DashboardPage } from './pages';
 
 import './App.css';
+
+function Logout() {
+  localStorage.clear()
+  return <Navigate to="/login" />
+}
+
+function RegisterAndLogout() {
+  localStorage.clear()
+  return <RegisterPage />
+}
 
 function App() {
   return (
     <Router>
       <div>
-        <Navigation />
+        <NavigationBar />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/leagues" element={<LeaguesPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterAndLogout />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </Router>

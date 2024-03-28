@@ -1,5 +1,7 @@
-import Navigation from './Navigation';
+import NavigationBar from './NavigationBar';
+import ProtectedRoute from './ProtectedRoute';
 
 export {
-    Navigation,
+    NavigationBar,
+    ProtectedRoute,
 };

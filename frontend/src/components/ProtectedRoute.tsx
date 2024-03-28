@@ -1,12 +1,12 @@
 /// Wrapper for a protected route, we need auth token before accessin route
-import { useState, useEffect, ReactNode } from "react"
+import { useState, useEffect, ReactElement } from "react"
 import { Navigate } from "react-router-dom"
 import { jwtDecode } from "jwt-decode"
 import api from "../api"
 import { REFRESH_TOKEN, ACCESS_TOKEN } from "../constants"
 
 interface ProtectedRouteProps {
-    children: ReactNode;
+    children: ReactElement;
 }
 
 interface DecodedToken {
@@ -55,9 +55,11 @@ function ProtectedRoute({ children } : ProtectedRouteProps) {
         }
     }
 
-    if (isAuthorized === null) {
+    if (isAuthorized === null || isAuthorized === undefined) {
         return <div>Loading...</div>
     }
 
     return isAuthorized ? children: <Navigate to="/login" />
 }
+
+export default ProtectedRoute;

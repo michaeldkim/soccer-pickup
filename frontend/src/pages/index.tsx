@@ -4,6 +4,7 @@ import LoginPage from "./LoginPage";
 import LeaguesPage from "./LeaguesPage";
 import RegisterPage from "./RegisterPage";
 import NotFound from "./NotFound";
+import DashboardPage from "./DashboardPage";
 
 export {
     HomePage,
@@ -12,5 +13,6 @@ export {
     LeaguesPage,
     RegisterPage,
     NotFound,
+    DashboardPage,
 };
 
