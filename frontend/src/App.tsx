@@ -4,6 +4,7 @@ import { NavigationBar, ProtectedRoute } from './components';
 import { HomePage, AboutPage, LoginPage, LeaguesPage, RegisterPage, NotFound, DashboardPage } from './pages';
 
 import './App.css';
+import './fonts.css';
 
 function Logout() {
   localStorage.clear()

@@ -75,12 +75,12 @@ const DashboardPage: React.FC = () => {
 
   return (
     <div>
-      <div className='bg-purple'>
-        <h1>Welcome to the Soccer Team Management Dashboard</h1>
+      <div className='bg-purple-500 m-5'>
+        <h1 className='text-xl font-bold'>Welcome to the Soccer Team Management Dashboard</h1>
         <p>Manage your teams, schedule matches, and keep track of standings all in one place.</p>
       </div>
-      <div>
-        <h2>Leagues</h2>
+      <div className='bg-purple-500 m-5'>
+        <h2 className='text-xl font-bold'>Leagues</h2>
         {leagues.map((league) => (
           <LeagueList league={league} onDelete={deleteLeague} key={league.id} />
         ))}
