@@ -2,6 +2,7 @@ import { useState } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import axios from "axios";
 
 interface FormProps {
     route: string;
@@ -21,7 +22,9 @@ const Form: React.FC<FormProps> = ({ route , method }) => {
         e.preventDefault();
 
         try {
-            const res = await api.post(route, {username, password })
+            console.log("Sending data to server:", {username, password})
+
+            const res = await api.post(route, {username, password})
             if (method === "login") {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
@@ -30,7 +33,9 @@ const Form: React.FC<FormProps> = ({ route , method }) => {
                 navigate("/login")
             }
         } catch (error) {
-            alert(error)
+            if (axios.isAxiosError(error)){
+                console.error('Error response:', error.response)
+            }
         } finally {
             setLoading(false)
         }
@@ -59,6 +64,6 @@ const Form: React.FC<FormProps> = ({ route , method }) => {
         </button>
     </form>
     );
-  };
+};
 
 export default Form;
