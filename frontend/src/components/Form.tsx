@@ -20,6 +20,7 @@ const Form: React.FC<FormProps> = ({ route, method }) => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         setLoading(true);
         e.preventDefault();
+
         try {
             const res = await api.post(route, { username, password })
             if (method === "login") {
@@ -37,11 +38,12 @@ const Form: React.FC<FormProps> = ({ route, method }) => {
             setLoading(false)
         }
     };
+
     return (
-        <div className="flex justify-center items-center h-screen w-screen">
+        <div className="flex justify-center items-center h-screen w-screen bg-light-slate">
             <form onSubmit={handleSubmit} className="w-full max-w-xs">
-                <div className="mb-4">
-                    <h1 className="block text-gray-700 text-3xl font-bold mb-4">{name}</h1>
+                <div className="mb-4 flex justify-center items-center flex-col">
+                    <h1 className="block text-gray-700 text-4xl font-bold mb-7">{name}</h1>
                     <input
                         className="placeholder:pl-1 indent-1"
                         type="text"
@@ -50,7 +52,7 @@ const Form: React.FC<FormProps> = ({ route, method }) => {
                         placeholder="Username"
                     />
                 </div>
-                <div className="mb-6">
+                <div className="mb-6 flex justify-center items-center flex-col">
                     <input
                         className="placeholder:pl-1 indent-1"
                         type="password"
@@ -60,7 +62,7 @@ const Form: React.FC<FormProps> = ({ route, method }) => {
                     />
                 </div>
                 {loading && <LoadingIndicator />}
-                <div className="flex items-center justify-between">
+                <div className="flex justify-center items-center flex-col py-1">
                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
                         {name === "Login" ? "Sign In" : "Sign Up"}
                     </button>

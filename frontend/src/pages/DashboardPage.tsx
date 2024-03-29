@@ -74,10 +74,10 @@ const DashboardPage: React.FC = () => {
   }
 
   return (
-    <div>
-      <div className='bg-purple-500 m-5'>
+    <div className="flex flex-col items-center h-screen w-screen bg-light-slate px-5">
+      <div className='m-5 w-full'>
         <h1 className='text-xl font-bold'>Welcome to the Soccer Team Management Dashboard</h1>
-        <p>Manage your teams, schedule matches, and keep track of standings all in one place.</p>
+        <p className='pr-4 py-4'>Manage your teams, schedule matches, and keep track of standings all in one place.</p>
       </div>
       <div className='bg-purple-500 m-5'>
         <h2 className='text-xl font-bold'>Leagues</h2>
@@ -86,7 +86,7 @@ const DashboardPage: React.FC = () => {
         ))}
       </div>
       <h2>Create a League</h2>
-      <form onSubmit={createLeague}>
+      <form onSubmit={createLeague} className='flex flex-col'>
         <label htmlFor='title'>Title:</label>
         <br />
         <input
