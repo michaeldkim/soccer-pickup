@@ -13,8 +13,11 @@ const DashboardPage: React.FC = () => {
   const [leagues, setLeagues] = useState<League[]>([])
   const [content, setContent] = useState<string>("")
   const [title, setTitle] = useState<string>("")
+  const [username, setUsername] = useState<string>("")
 
   useEffect(() => {
+    const storedUsername = localStorage.getItem("username")
+    if (storedUsername) setUsername(storedUsername);
     getLeagues();
   }, [])
 
@@ -76,7 +79,7 @@ const DashboardPage: React.FC = () => {
   return (
     <div className="flex flex-col items-center h-screen w-screen bg-light-slate px-5">
       <div className='m-5 w-full'>
-        <h1 className='text-xl font-bold'>Welcome to the Soccer Team Management Dashboard</h1>
+        <h1 className='text-xl font-bold'>{`Welcome back, ${username}`}</h1>
         <p className='pr-4 py-4'>Manage your teams, schedule matches, and keep track of standings all in one place.</p>
       </div>
       <div className='bg-purple-500 m-5'>
@@ -85,30 +88,32 @@ const DashboardPage: React.FC = () => {
           <LeagueList league={league} onDelete={deleteLeague} key={league.id} />
         ))}
       </div>
-      <h2>Create a League</h2>
-      <form onSubmit={createLeague} className='flex flex-col'>
-        <label htmlFor='title'>Title:</label>
-        <br />
-        <input
-          type="text"
-          id="title"
-          name="title"
-          required
-          onChange={(e) => setTitle(e.target.value)}
-          value={title}
-        />
+      <div className="bg-slate-600 p-5">
+        <h2>Create a League</h2>
+        <form onSubmit={createLeague} className='flex flex-col'>
+          <label htmlFor='title'>Title:</label>
+          <br />
+          <input
+            type="text"
+            id="title"
+            name="title"
+            required
+            onChange={(e) => setTitle(e.target.value)}
+            value={title}
+          />
 
-        <label htmlFor='content'>Content:</label>
-        <br />
-        <textarea
-          id="content"
-          name="content"
-          required
-          onChange={(e) => setContent(e.target.value)}
-        ></textarea>
-        <br />
-        <input type='submit' value='Submit'></input>
-      </form>
+          <label htmlFor='content'>Content:</label>
+          <br />
+          <textarea
+            id="content"
+            name="content"
+            required
+            onChange={(e) => setContent(e.target.value)}
+          ></textarea>
+          <br />
+          <input type='submit' value='Submit'></input>
+        </form>
+      </div>
     </div>
   );
 };
