@@ -15,16 +15,12 @@ const Form: React.FC<FormProps> = ({ route, method }) => {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-
     const name = method === "login" ? "Login" : "Register";
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         setLoading(true);
         e.preventDefault();
-
         try {
-            console.log("Sending data to server:", { username, password })
-
             const res = await api.post(route, { username, password })
             if (method === "login") {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
@@ -41,9 +37,8 @@ const Form: React.FC<FormProps> = ({ route, method }) => {
             setLoading(false)
         }
     };
-
     return (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center h-screen w-screen">
             <form onSubmit={handleSubmit} className="w-full max-w-xs">
                 <div className="mb-4">
                     <h1 className="block text-gray-700 text-3xl font-bold mb-4">{name}</h1>
@@ -70,7 +65,6 @@ const Form: React.FC<FormProps> = ({ route, method }) => {
                         {name === "Login" ? "Sign In" : "Sign Up"}
                     </button>
                 </div>
-
             </form>
         </div>
     );
