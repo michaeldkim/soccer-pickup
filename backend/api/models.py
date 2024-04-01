@@ -15,7 +15,7 @@ class LeagueUserManager(BaseUserManager):
         user.save(using=self.db)
         return user
     
-    def create_superuser(self, email,first_name, last_name, gender, password=None):
+    def create_superuser(self, email, first_name, last_name, gender, password=None):
         user = self.create_user(
             email,
             password=password,

@@ -13,11 +13,12 @@ const DashboardPage: React.FC = () => {
   const [leagues, setLeagues] = useState<League[]>([])
   const [content, setContent] = useState<string>("")
   const [title, setTitle] = useState<string>("")
-  const [username, setUsername] = useState<string>("")
+  const [firstName, setFirstName] = useState<string>("")
 
   useEffect(() => {
-    const storedUsername = localStorage.getItem("username")
-    if (storedUsername) setUsername(storedUsername);
+    const storedFirstName = localStorage.getItem("first_name")
+    if (storedFirstName) setFirstName(storedFirstName);
+    console.log(storedFirstName);
     getLeagues();
   }, [])
 
@@ -79,7 +80,7 @@ const DashboardPage: React.FC = () => {
   return (
     <div className="flex flex-col items-center h-screen w-screen bg-light-slate px-5">
       <div className='m-5 w-full'>
-        <h1 className='text-xl font-bold'>{`Welcome back, ${username}`}</h1>
+        <h1 className='text-xl font-bold'>{`Welcome back, ${firstName}`}</h1>
         <p className='pr-4 py-4'>Manage your teams, schedule matches, and keep track of standings all in one place.</p>
       </div>
       <div className='bg-purple-500 m-5'>
