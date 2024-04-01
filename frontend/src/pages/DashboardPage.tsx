@@ -83,7 +83,7 @@ const DashboardPage: React.FC = () => {
         <h1 className='text-xl font-bold'>{`Welcome back, ${firstName}`}</h1>
         <p className='pr-4 py-4'>Manage your teams, schedule matches, and keep track of standings all in one place.</p>
       </div>
-      <div className='bg-purple-500 m-5'>
+      <div className='bg-purple-500 px-5 w-screen'>
         <h2 className='text-xl font-bold'>Leagues</h2>
         {leagues.map((league) => (
           <LeagueList league={league} onDelete={deleteLeague} key={league.id} />
