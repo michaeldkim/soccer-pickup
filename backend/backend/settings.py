@@ -48,6 +48,7 @@ SIMPLE_JWT = {
 
 # Application definition
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -61,6 +62,7 @@ INSTALLED_APPS = [
     'api',
 ]
 
+AUTH_USER_MODEL = "api.LeagueUser"
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWS_CREDENTIALS = True
 
