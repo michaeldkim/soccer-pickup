@@ -49,6 +49,25 @@ const DashboardPage: React.FC = () => {
       })
   }
 
+  const editLeague = (id: number) => {
+    api
+      .put(`/api/leagues/edit/${id}/`)
+      .then((res) => {
+        if (res.status === 204) alert("League updated!");
+        else alert("Failed to update League")
+        getLeagues();
+      })
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          // If the error is an Axios error, you can get the detailed request and response.
+          alert(`Error: ${error.response?.status} - ${error.response?.statusText}`);
+        } else {
+          // If it's not an Axios error, it might be a more systemic issue (network failure, etc.)
+          alert(error);
+        }
+      })
+  };
+
   const deleteLeague = (id: number) => {
     api
       .delete(`/api/leagues/delete/${id}/`)
@@ -185,7 +204,7 @@ const DashboardPage: React.FC = () => {
       <div className=' px-5 w-screen'>
         <h2 className='text-xl mb-2'>LEAGUES</h2>
         {leagues.map((league) => (
-          <LeagueList league={league} onDelete={deleteLeague} key={league.id} />
+          <LeagueList league={league} onEdit={editLeague} onDelete={deleteLeague} key={league.id} />
         ))}
       </div>
     </div>

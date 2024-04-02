@@ -1,4 +1,4 @@
-import DeleteModal from './DeleteModal'
+import { DeleteModal, EditModal } from '../components'
 import { useState } from 'react'
 
 interface LeagueProps {
@@ -13,6 +13,7 @@ interface LeagueProps {
         game_day: string;
         teams: { id: number; name: string; }[];
     };
+    onEdit: (id: number) => void;
     onDelete: (id: number) => void;
 }
 
@@ -28,11 +29,11 @@ enum DaysOfWeek {
 
 function getFullDayName(dayAbbreviation: keyof typeof DaysOfWeek | string): string {
     if (dayAbbreviation in DaysOfWeek) {
-      return DaysOfWeek[dayAbbreviation as keyof typeof DaysOfWeek];
+        return DaysOfWeek[dayAbbreviation as keyof typeof DaysOfWeek];
     }
     console.warn('Invalid day abbreviation:', dayAbbreviation);
     return dayAbbreviation; // Fallback to the input if it's not a valid key
-  }
+}
 
 function formatTime(timeString: string) {
     const [hours24, minutes] = timeString.split(':');
@@ -55,20 +56,29 @@ function formatDate(dateString: string): string {
     return correctedDate.toLocaleDateString('en-US', options);
 }
 
-function LeagueList({ league, onDelete }: LeagueProps) {
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+function LeagueList({ league, onEdit, onDelete }: LeagueProps) {
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+    const [isEditModalOpen, setIsEditModelOpen] = useState<boolean>(false);
 
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
+    const openDeleteModal = () => setIsDeleteModalOpen(true);
+    const closeDeleteModal = () => setIsDeleteModalOpen(false);
+    const openEditModal = () => setIsEditModelOpen(true);
+    const closeEditModal = () => setIsEditModelOpen(false);
 
     const handleDelete = () => {
         onDelete(league.id);
-        closeModal();
+        closeDeleteModal();
     };
+
+    const handleEdit = () => {
+        onEdit(league.id);
+        closeEditModal();
+      };
 
     return (
         <div className="flex flex-col mb-4 border-solid">
-            <DeleteModal isOpen={isModalOpen} onClose={closeModal} onConfirm={handleDelete} />
+            <EditModal isOpen={isEditModalOpen} onClose={closeEditModal} league={league} onUpdate={handleEdit} />
+            <DeleteModal isOpen={isDeleteModalOpen} onClose={closeDeleteModal} onConfirm={handleDelete} />
             <div className="league-info">
                 <strong>Title:</strong> {league.title}
                 <p>{league.content}</p>
@@ -91,9 +101,15 @@ function LeagueList({ league, onDelete }: LeagueProps) {
                 </div>
             </div>
 
-            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-20 m-5" onClick={openModal}>
-                Delete
-            </button>
+            <div>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-20 m-5" onClick={openEditModal}>
+                    Edit
+                </button>
+                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-20 m-5" onClick={openDeleteModal}>
+                    Delete
+                </button>
+            </div>
+
         </div>
     );
 }

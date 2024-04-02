@@ -28,6 +28,14 @@ class LeagueDelete(generics.DestroyAPIView):
     def get_queryset(self):
         user = self.request.user
         return League.objects.filter(author=user) # You can get notes only written by you and no one else
+    
+class LeagueEdit(generics.UpdateAPIView):
+    serializer_class = LeagueSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return League.objects.filter(author=user)
 
 # Create your views here.
 class CreateUserView(generics.CreateAPIView):
