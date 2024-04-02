@@ -1,18 +1,25 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
-import { League } from '../types/types'
+import { League, Team } from '../types/types';
+import { formatDateForInput } from '../utils';
 
 interface EditModalProps {
     isOpen: boolean;
     onClose: () => void;
     league: League;
     onUpdate: (league: League) => void;
-  }
+}
 
 export default function EditModal({ isOpen, onClose, league, onUpdate }: EditModalProps) {
     // Local state for form inputs, initialized from league props
     const [title, setTitle] = useState(league.title);
-    // ... other states for each field
+    const [content, setContent] = useState(league.content);
+    const [maxTeams, setMaxTeams] = useState(league.max_teams);
+    const [location, setLocation] = useState(league.location);
+    const [gameTime, setGameTime] = useState(league.game_time);
+    const [leagueStartDate, setLeagueStartDate] = useState(formatDateForInput(league.league_start_date));
+    const [gameDay, setGameDay] = useState(league.game_day);
+    const [teams, setTeams] = useState(league.teams);
 
     // Handler for when the form is submitted
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -21,41 +28,114 @@ export default function EditModal({ isOpen, onClose, league, onUpdate }: EditMod
         const updatedLeague = {
             ...league,
             title,
-            // ... other fields
+            content,
+            max_teams: maxTeams,
+            location: location,
+            game_time: gameTime,
+            league_start_date: new Date(leagueStartDate),
+            game_day: gameDay,
+            teams: teams,
         };
         onUpdate(updatedLeague);
-        onClose(); // Close the modal after update
+        onClose();
     };
 
     return (
         <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-10" onClose={onClose}>
                 <Transition.Child
-                // ... other transition properties
+                    as={Fragment}
+                    enter="ease-out duration-300"
+                    enterFrom="opacity-0"
+                    enterTo="opacity-100"
+                    leave="ease-in duration-200"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
                 >
-                    {/* Overlay */}
+                    <div className="fixed inset-0 bg-black/25" />
                 </Transition.Child>
 
                 <div className="fixed inset-0 overflow-y-auto">
                     <div className="flex min-h-full items-center justify-center p-4 text-center">
                         <Transition.Child
-                        // ... other transition properties
+                            as={Fragment}
+                            enter="ease-out duration-300"
+                            enterFrom="opacity-0 scale-95"
+                            enterTo="opacity-100 scale-100"
+                            leave="ease-in duration-200"
+                            leaveFrom="opacity-100 scale-100"
+                            leaveTo="opacity-0 scale-95"
                         >
                             <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                                 <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
                                     Edit League
                                 </Dialog.Title>
                                 <form onSubmit={handleSubmit}>
-                                    {/* Form fields */}
                                     <label htmlFor='title'>Title:</label>
+                                    <br />
                                     <input
                                         type="text"
                                         id="title"
-                                        value={title}
+                                        name="title"
                                         onChange={(e) => setTitle(e.target.value)}
-                                    // ... other input properties
+                                        value={title}
                                     />
-                                    {/* ... other form inputs for editing league properties */}
+
+                                    <label htmlFor='content'>Content:</label>
+                                    <br />
+                                    <textarea
+                                        id="content"
+                                        name="content"
+                                        onChange={(e) => setContent(e.target.value)}
+                                    ></textarea>
+
+                                    <label htmlFor='max_teams'>Max Teams:</label>
+                                    <br />
+                                    <input
+                                        type="number"
+                                        id="max_teams"
+                                        name="max_teams"
+                                        onChange={(e) => setMaxTeams(parseInt(e.target.value, 10) || 0)}
+                                        value={maxTeams}
+                                    />
+
+                                    <label htmlFor='location'>Location:</label>
+                                    <input
+                                        type="text"
+                                        id="location"
+                                        name="location"
+                                        onChange={(e) => setLocation(e.target.value)}
+                                        value={location}
+                                    />
+
+                                    <label htmlFor='location'>Game Day:</label>
+                                    <input
+                                        type="text"
+                                        id="game_day"
+                                        name="game_day"
+                                        onChange={(e) => setGameDay(e.target.value)}
+                                        value={gameDay}
+                                    />
+
+                                    <label htmlFor='game_time'>Game Time:</label>
+                                    <input
+                                        type="time"
+                                        id="game_time"
+                                        name="game_time"
+                                        onChange={(e) => setGameTime(e.target.value)}
+                                        value={gameTime}
+                                    />
+
+                                    <label htmlFor='game_date'>League Start Date:</label>
+                                    <input
+                                        type="date"
+                                        id="game_date"
+                                        name="game_date"
+                                        onChange={(e) => setLeagueStartDate(e.target.value)}
+                                        value={leagueStartDate}
+                                    />
+
+                                    <br />
                                     <div className="mt-4">
                                         <button
                                             type="submit"

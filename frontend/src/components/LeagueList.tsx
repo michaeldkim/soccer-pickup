@@ -1,5 +1,6 @@
 import { DeleteModal, EditModal } from '../components'
 import { useState } from 'react'
+import { League } from '../types/types'
 
 interface LeagueProps {
     league: {
@@ -43,22 +44,27 @@ function formatTime(timeString: string) {
     return `${hours12}:${minutes} ${suffix}`;
 }
 
-function formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    const userTimezoneOffset = date.getTimezoneOffset() * 60000; // Convert offset to milliseconds
-    const correctedDate = new Date(date.getTime() + userTimezoneOffset);
-
+function formatDate(dateInput: string | Date): string {
+    // If the input is a string, convert it to a Date object
+    const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+  
+    // Check if date is an instance of Date and is valid
+    if (!(date instanceof Date) || isNaN(date.getTime())) {
+      throw new Error('Invalid date input');
+    }
+  
     const options: Intl.DateTimeFormatOptions = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     };
-    return correctedDate.toLocaleDateString('en-US', options);
-}
+    return date.toLocaleDateString('en-US', options);
+  }
 
 function LeagueList({ league, onEdit, onDelete }: LeagueProps) {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
     const [isEditModalOpen, setIsEditModelOpen] = useState<boolean>(false);
+    const formattedDate = formatDate(league.league_start_date);
 
     const openDeleteModal = () => setIsDeleteModalOpen(true);
     const closeDeleteModal = () => setIsDeleteModalOpen(false);
@@ -85,7 +91,7 @@ function LeagueList({ league, onEdit, onDelete }: LeagueProps) {
                 <p><strong>Max Teams:</strong> {league.max_teams}</p>
                 <p><strong>Location:</strong> {league.location}</p>
                 <p><strong>Game Time:</strong> {formatTime(league.game_time)}</p>
-                <p><strong>League Start Date:</strong> {formatDate(league.league_start_date.toString())}</p>
+                <p><strong>League Start Date:</strong> {formattedDate}</p>
                 <p><strong>Game Day:</strong> {getFullDayName(league.game_day)}</p>
                 <div>
                     <strong>Teams:</strong>
