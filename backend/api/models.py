@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User, BaseUserManager, AbstractBaseUser
+from django.utils import timezone
+from datetime import date, time 
 
 class LeagueUserManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, gender, password=None):
@@ -53,11 +55,39 @@ class LeagueUser(AbstractBaseUser):
     def is_staff(self):
         return self.is_admin
 
+class Team(models.Model):
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
 class League(models.Model):
+    DAY_OF_THE_WEEK = [
+        ('MO', 'Monday'),
+        ('TU', 'Tuesday'),
+        ('WE', 'Wednesday'),
+        ('TH', 'Thursday'),
+        ('FR', 'Friday'),
+        ('SA', 'Saturday'),
+        ('SU', 'Sunday'),
+    ]
+
     title = models.CharField(max_length=100)
     content = models.TextField()
     max_teams = models.IntegerField(default=8)
+    location = models.CharField(max_length=100, default="TBD")
+    game_day = models.CharField(
+        max_length=2,
+        choices=DAY_OF_THE_WEEK,
+        default='MO'
+    )
+    game_time = models.TimeField(default=time(18,00))
+    league_start_date = models.DateField(default=date.today)
     author = models.ForeignKey(LeagueUser, on_delete=models.CASCADE, related_name="leagues")
+    teams = models.ManyToManyField(Team, related_name="leagues", blank=True)
 
     def __str__(self):
         return self.title

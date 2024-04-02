@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import League, LeagueUser
+from .models import League, LeagueUser, Team
 
 class LeagueUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,5 +21,10 @@ class LeagueUserSerializer(serializers.ModelSerializer):
 class LeagueSerializer(serializers.ModelSerializer):
     class Meta:
         model = League
-        fields = ["id", "title", "content", "max_teams"]
+        fields = ['id', 'title', 'content', 'max_teams', 'location', 'game_day', 'game_time', 'league_start_date', 'teams']
         extra_kwargs = {"author": {"read_only": True}}
+
+class TeamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Team
+        fields = ['id', 'name']

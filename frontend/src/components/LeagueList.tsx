@@ -6,31 +6,96 @@ interface LeagueProps {
         id: number;
         title: string;
         content: string;
+        max_teams: number;
+        location: string;
+        game_time: string;
+        league_start_date: Date;
+        game_day: string;
+        teams: { id: number; name: string; }[];
     };
     onDelete: (id: number) => void;
 }
 
-function League({ league, onDelete }: LeagueProps) {
+enum DaysOfWeek {
+    MO = 'Monday',
+    TU = 'Tuesday',
+    WE = 'Wednesday',
+    TH = 'Thursday',
+    FR = 'Friday',
+    SA = 'Saturday',
+    SU = 'Sunday'
+}
+
+function getFullDayName(dayAbbreviation: keyof typeof DaysOfWeek | string): string {
+    if (dayAbbreviation in DaysOfWeek) {
+      return DaysOfWeek[dayAbbreviation as keyof typeof DaysOfWeek];
+    }
+    console.warn('Invalid day abbreviation:', dayAbbreviation);
+    return dayAbbreviation; // Fallback to the input if it's not a valid key
+  }
+
+function formatTime(timeString: string) {
+    const [hours24, minutes] = timeString.split(':');
+    const hours = parseInt(hours24, 10);
+    const suffix = hours >= 12 ? "PM" : "AM";
+    const hours12 = ((hours + 11) % 12 + 1);
+    return `${hours12}:${minutes} ${suffix}`;
+}
+
+function formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const userTimezoneOffset = date.getTimezoneOffset() * 60000; // Convert offset to milliseconds
+    const correctedDate = new Date(date.getTime() + userTimezoneOffset);
+
+    const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    };
+    return correctedDate.toLocaleDateString('en-US', options);
+}
+
+function LeagueList({ league, onDelete }: LeagueProps) {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
-  
+
     const handleDelete = () => {
-      onDelete(league.id);
-      closeModal();
+        onDelete(league.id);
+        closeModal();
     };
 
     return (
-        <div className="flex flex-col">
-        <DeleteModal isOpen={isModalOpen} onClose={closeModal} onConfirm={handleDelete} />
-        <h1 className="font-bold">{league.title}</h1>
-        <p>{league.content}</p>
-        <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={openModal}>
-            Delete
-        </button>
+        <div className="flex flex-col mb-4 border-solid">
+            <DeleteModal isOpen={isModalOpen} onClose={closeModal} onConfirm={handleDelete} />
+            <div className="league-info">
+                <strong>Title:</strong> {league.title}
+                <p>{league.content}</p>
+                <p><strong>Max Teams:</strong> {league.max_teams}</p>
+                <p><strong>Location:</strong> {league.location}</p>
+                <p><strong>Game Time:</strong> {formatTime(league.game_time)}</p>
+                <p><strong>League Start Date:</strong> {formatDate(league.league_start_date.toString())}</p>
+                <p><strong>Game Day:</strong> {getFullDayName(league.game_day)}</p>
+                <div>
+                    <strong>Teams:</strong>
+                    {league.teams.length > 0 ? (
+                        <ul>
+                            {league.teams.map((team) => (
+                                <li key={team.id}>{team.name}</li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>There are no teams in this league.</p>
+                    )}
+                </div>
+            </div>
+
+            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-20 m-5" onClick={openModal}>
+                Delete
+            </button>
         </div>
     );
 }
 
-export default League;
+export default LeagueList;
