@@ -1,7 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
 import { League, Team } from '../types/types';
-import { formatDateForInput } from '../utils';
 
 interface EditModalProps {
     isOpen: boolean;
@@ -12,19 +11,19 @@ interface EditModalProps {
 
 export default function EditModal({ isOpen, onClose, league, onUpdate }: EditModalProps) {
     // Local state for form inputs, initialized from league props
-    const [title, setTitle] = useState(league.title);
-    const [content, setContent] = useState(league.content);
-    const [maxTeams, setMaxTeams] = useState(league.max_teams);
-    const [location, setLocation] = useState(league.location);
-    const [gameTime, setGameTime] = useState(league.game_time);
-    const [leagueStartDate, setLeagueStartDate] = useState(formatDateForInput(league.league_start_date));
-    const [gameDay, setGameDay] = useState(league.game_day);
-    const [teams, setTeams] = useState(league.teams);
+    const [title, setTitle] = useState<string>(league.title);
+    const [content, setContent] = useState<string>(league.content);
+    const [maxTeams, setMaxTeams] = useState<number>(league.max_teams);
+    const [location, setLocation] = useState<string>(league.location);
+    const [gameTime, setGameTime] = useState<string>(league.game_time);
+    const [leagueStartDate, setLeagueStartDate] = useState<Date>(league.league_start_date);
+    const [gameDay, setGameDay] = useState<string>(league.game_day);
+    const [teams, setTeams] = useState<Team[]>(league.teams);
 
     // Handler for when the form is submitted
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // Construct updated league object
+
         const updatedLeague = {
             ...league,
             title,
@@ -38,6 +37,22 @@ export default function EditModal({ isOpen, onClose, league, onUpdate }: EditMod
         };
         onUpdate(updatedLeague);
         onClose();
+    };
+
+    function toISODateString(dateInput: Date) {
+        const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+        const isoDate = date.toISOString().split('T')[0];
+        return isoDate;
+    }
+
+    // Handler for adding a new team (you need to define the logic for this)
+    const handleAddTeam = (newTeam: Team) => {
+        setTeams([...teams, newTeam]);
+    };
+
+    // Handler for removing a team
+    const handleRemoveTeam = (teamId: number) => {
+        setTeams(teams.filter(team => team.id !== teamId));
     };
 
     return (
@@ -125,31 +140,34 @@ export default function EditModal({ isOpen, onClose, league, onUpdate }: EditMod
                                         onChange={(e) => setGameTime(e.target.value)}
                                         value={gameTime}
                                     />
-
                                     <label htmlFor='game_date'>League Start Date:</label>
                                     <input
                                         type="date"
                                         id="game_date"
                                         name="game_date"
-                                        onChange={(e) => setLeagueStartDate(e.target.value)}
-                                        value={leagueStartDate}
+                                        onChange={(e) => setLeagueStartDate(new Date(e.target.value))}
+                                        value={toISODateString(leagueStartDate)}
                                     />
-
                                     <br />
+                                    <div>
+                                        TEAMS
+                                        {teams.map(team => (
+                                            <div key={team.id}>
+                                                {team.name}
+                                                <button onClick={() => handleRemoveTeam(team.id)}>Remove</button>
+                                            </div>
+                                        ))}
+                                    </div>
                                     <div className="mt-4">
                                         <button
                                             type="submit"
                                             className="inline-flex justify-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
-                                        >
-                                            Update
-                                        </button>
+                                        >Update</button>
                                         <button
                                             type="button"
                                             className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                                             onClick={onClose}
-                                        >
-                                            Cancel
-                                        </button>
+                                        >Cancel</button>
                                     </div>
                                 </form>
                             </Dialog.Panel>

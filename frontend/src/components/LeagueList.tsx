@@ -45,21 +45,21 @@ function formatTime(timeString: string) {
 }
 
 function formatDate(dateInput: string | Date): string {
-    // If the input is a string, convert it to a Date object
-    const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
-  
-    // Check if date is an instance of Date and is valid
-    if (!(date instanceof Date) || isNaN(date.getTime())) {
-      throw new Error('Invalid date input');
+    let date: Date;
+
+    if (typeof dateInput === 'string') {
+        const parts = dateInput.split('-');
+        date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+    } else {
+        date = dateInput;
     }
-  
     const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     };
     return date.toLocaleDateString('en-US', options);
-  }
+}
 
 function LeagueList({ league, onEdit, onDelete }: LeagueProps) {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
