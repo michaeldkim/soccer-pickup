@@ -82,7 +82,7 @@ function LeagueList({ league, onEdit, onDelete }: LeagueProps) {
       };
 
     return (
-        <div className="flex flex-col mb-4 border-solid">
+        <div className="flex flex-col mb-4 border-solid-1px">
             <EditModal isOpen={isEditModalOpen} onClose={closeEditModal} league={league} onUpdate={handleEdit} />
             <DeleteModal isOpen={isDeleteModalOpen} onClose={closeDeleteModal} onConfirm={handleDelete} />
             <div className="league-info">
