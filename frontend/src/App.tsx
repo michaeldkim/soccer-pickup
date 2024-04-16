@@ -1,10 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { NavigationBar, ProtectedRoute } from './components';
-import { HomePage, AboutPage, LoginPage, LeaguesPage, RegisterPage, NotFound, DashboardPage, DashboardLeaguePage } from './pages';
+import { HomePage, AboutPage, LoginPage, 
+  LeaguesPage, RegisterPage, NotFound, 
+  DashboardPage, DashboardLeaguePage,
+  DashboardCreateLeague } from './pages';
 
 import './App.css';
-import LeagueList from './components/LeagueList';
 
 function Logout() {
   localStorage.clear()
@@ -38,6 +40,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <DashboardLeaguePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route 
+            path="/dashboard/leagues/create"
+            element={
+              <ProtectedRoute>
+                <DashboardCreateLeague />
               </ProtectedRoute>
             }
           />

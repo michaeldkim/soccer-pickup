@@ -7,6 +7,7 @@ import NotFound from "./NotFound";
 import DashboardPage from "./DashboardPage";
 import DashboardHomePage from "./dashboard/DashboardHomePage";
 import DashboardLeaguePage from "./dashboard/DashboardLeaguePage";
+import DashboardCreateLeague from "./dashboard/DashboardCreateLeague";
 
 export {
     HomePage,
@@ -18,5 +19,6 @@ export {
     DashboardPage,
     DashboardHomePage,
     DashboardLeaguePage,
+    DashboardCreateLeague
 };
 
