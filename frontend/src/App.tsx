@@ -4,7 +4,7 @@ import { NavigationBar, ProtectedRoute } from './components';
 import { HomePage, AboutPage, LoginPage, 
   LeaguesPage, RegisterPage, NotFound, 
   DashboardPage, DashboardLeaguePage,
-  DashboardCreateLeague } from './pages';
+  DashboardCreateLeague, DashboardEditLeague } from './pages';
 
 import './App.css';
 
@@ -48,6 +48,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <DashboardCreateLeague />
+              </ProtectedRoute>
+            }
+          />
+          <Route 
+            path="/dashboard/leagues/edit"
+            element={
+              <ProtectedRoute>
+                <DashboardEditLeague />
               </ProtectedRoute>
             }
           />

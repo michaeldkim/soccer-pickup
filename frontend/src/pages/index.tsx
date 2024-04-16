@@ -8,6 +8,7 @@ import DashboardPage from "./DashboardPage";
 import DashboardHomePage from "./dashboard/DashboardHomePage";
 import DashboardLeaguePage from "./dashboard/DashboardLeaguePage";
 import DashboardCreateLeague from "./dashboard/DashboardCreateLeague";
+import DashboardEditLeague from "./dashboard/DashboardEditLeague";
 
 export {
     HomePage,
@@ -19,6 +20,7 @@ export {
     DashboardPage,
     DashboardHomePage,
     DashboardLeaguePage,
-    DashboardCreateLeague
+    DashboardCreateLeague,
+    DashboardEditLeague,
 };
 
