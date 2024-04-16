@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import axios from "axios";
 import LoadingIndicator from "./LoadingIndicator";
+import { Link } from 'react-router-dom';
 
 interface FormProps {
     route: string;
@@ -49,12 +50,12 @@ const Form: React.FC<FormProps> = ({ route, method }) => {
     };
 
     return (
-        <div className="flex justify-center items-center h-screen w-screen bg-light-slate">
+        <div className="flex justify-center items-center h-screen w-fill bg-light-slate">
             <form onSubmit={handleSubmit} className="w-full max-w-xs">
-                <div className="mb-4 flex justify-center items-center flex-col">
+                <div className="flex flex-col justify-center align-middle items-center">
                     <h1 className="block text-gray-700 text-4xl font-bold mb-7">{isLogin ? "Login" : "Register"}</h1>
                     <input
-                        className="placeholder:pl-1 indent-1"
+                        className="shadow appearance-none border rounded py-2 px-3 text-grey-darker mb-3 w-full"
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -63,7 +64,7 @@ const Form: React.FC<FormProps> = ({ route, method }) => {
                     />
                 </div>
                 {!isLogin && (
-                    <div>
+                    <div className="flex flex-col justify-center align-middle">
                         <input
                                 className="shadow appearance-none border rounded py-2 px-3 text-grey-darker mb-3"
                                 type="text"
@@ -95,7 +96,7 @@ const Form: React.FC<FormProps> = ({ route, method }) => {
                 )}
                 <div className="mb-6 flex justify-center items-center flex-col">
                     <input
-                        className="placeholder:pl-1 indent-1"
+                        className="shadow appearance-none border rounded py-2 px-3 text-grey-darker mb-3 w-full"
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -109,6 +110,14 @@ const Form: React.FC<FormProps> = ({ route, method }) => {
                         {isLogin ? "Sign In" : "Sign Up"}
                     </button>
                 </div>
+                {isLogin ? 
+                    <div className="mt-5 flex justify-center"> 
+                        <Link to="/register">Don't have an account?</Link>
+                    </div> : 
+                    <div className="mt-5 flex justify-center">
+                        <Link to="/login">Already have an account?</Link>
+                    </div>
+                }
             </form>
         </div>
     );

@@ -7,16 +7,21 @@ const NavigationBar: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const menuLinks = [
-        { name: 'Home', to: '/' },
         { name: 'Leagues', to: '/leagues' },
         { name: 'About', to: '/about' },
         { name: 'Dashboard', to: '/dashboard' },
         { name: 'Login', to: '/login' },
+        { name: 'Logout', to: '/logout'},
     ];
 
     return (
         <header className="bg-blue-500 text-white p-4">
             <div className="flex justify-between items-center">
+                <div className="font-bold text-lg">
+                    <Link to="/" className="hover:text-gray-300">
+                        Liberty Lineup
+                    </Link>
+                </div>
                 <nav className="hidden md:flex">
                     {menuLinks.map((link) => (
                         <Link key={link.name} to={link.to} className="hover:text-gray-300 px-4">
@@ -24,7 +29,7 @@ const NavigationBar: React.FC = () => {
                         </Link>
                     ))}
                 </nav>
-                <Menu as="div" className="md:hidden items-end">
+                <Menu as="div" className="relative md:hidden">
                     <Menu.Button onClick={() => setIsMenuOpen(!isMenuOpen)}>
                         {isMenuOpen ? (
                             <XMarkIcon className="block h-6 w-6" aria-hidden="true" />

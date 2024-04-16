@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import api from "../api";
 import axios from "axios"
 import LeagueList from "../components/LeagueList"
+import { Tab } from '@headlessui/react'
+import DashboardNavBar from '../components/DashboardNavBar';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
 interface League {
   id: number;
@@ -118,8 +121,11 @@ const DashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center h-max w-screen bg-light-slate px-5">
-      <div className='m-5 w-full'>
+    <div className="flex flex-row items-center h-max w-screen bg-light-slate">
+      <div className='flex flex-col bg-indigo-500 h-screen w-1/4 items-center'>
+        <DashboardNavBar />
+      </div>
+      <div className='flex flex-col h-screen w-full justify-start text-white bg-black'>
         <h1 className='text-xl font-bold'>{`Welcome back, ${firstName}`}</h1>
         <p className='pr-4 py-4'>Manage your teams, schedule matches, and keep track of standings all in one place.</p>
       </div>
