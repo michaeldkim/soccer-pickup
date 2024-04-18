@@ -9,7 +9,7 @@ const DashboardPage: React.FC = () => {
     if (storedFirstName) setFirstName(storedFirstName);
     console.log(storedFirstName);
   }, [])
-       
+
   return (
     <div className="flex flex-row items-center h-screen w-screen bg-light-slate">
       <div className='flex flex-col h-screen items-center'>
