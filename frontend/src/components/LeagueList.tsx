@@ -64,29 +64,17 @@ function formatDate(dateInput: string | Date): string {
 
 function LeagueList({ league, onEdit, onDelete }: LeagueProps) {
     const [isOpen, setIsOpen] = useState(false);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
-    const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
     const formattedDate = formatDate(league.league_start_date);
-
-    const handleEditConfirm = (id: number) => {
-        setIsEditModalOpen(true);
-    };
-
-    const handleDeleteConfirm = (id: number) => {
-        setIsDeleteModalOpen(true);
-    };
 
     return (
         <div className="flex flex-col my-4 border-solid-1px border-t-2 border-slate-500">
-            <EditModal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} league={league} onUpdate={() => onEdit(league.id)} />
-            <DeleteModal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} onConfirm={() => onDelete(league.id)} />
             
             <div className="flex justify-between items-center p-2">
                 <h3 className="flex flex-row text-xl font-bold cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
                     {league.title}
                     {isOpen ? <ChevronUpIcon className="w-5 h-5" /> : <ChevronDownIcon className="w-5 h-5" />}
                 </h3>
-                <OptionsButton league={league} onEditConfirm={() => handleEditConfirm(league.id)} onDeleteConfirm={() => handleDeleteConfirm(league.id)} />
+                <OptionsButton league={league} onEdit={() => onEdit(league.id)} onDelete={() => onDelete(league.id)} />
             </div>
 
             <Transition
