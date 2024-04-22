@@ -1,11 +1,48 @@
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
 from rest_framework import generics
-from .serializers import LeagueUserSerializer, LeagueSerializer
+from .serializers import LeagueUserSerializer, LeagueSerializer, TeamSerializer, PlayerSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import League
+from .models import League, Team, Player
 
 User = get_user_model()
+
+class TeamListCreate(generics.ListCreateAPIView):
+    queryset = Team.objects.all()
+    serializer_class = TeamSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save(author=self.request.user)
+        else:
+            print(serializer.errors)
+
+class TeamUpdate(generics.UpdateAPIView):
+    queryset = Team.objects.all()
+    serializer_class = TeamSerializer
+    permission_classes = [IsAuthenticated]
+
+class TeamDelete(generics.DestroyAPIView):
+    queryset = Team.objects.all()
+    serializer_class = TeamSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class PlayerListCreate(generics.ListCreateAPIView):
+    queryset = Player.objects.all()
+    serializer_class = PlayerSerializer
+    permission_classes = [IsAuthenticated]
+
+class PlayerUpdate(generics.UpdateAPIView):
+    queryset = Player.objects.all()
+    serializer_class = PlayerSerializer
+    permission_classes = [IsAuthenticated]
+
+class PlayerDelete(generics.DestroyAPIView):
+    queryset = Player.objects.all()
+    serializer_class = PlayerSerializer
+    permission_classes = [IsAuthenticated]
 
 class LeagueListCreate(generics.ListCreateAPIView):
     serializer_class = LeagueSerializer

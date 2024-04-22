@@ -55,8 +55,23 @@ class LeagueUser(AbstractBaseUser):
     def is_staff(self):
         return self.is_admin
 
+
+class Player(models.Model):
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+    
 class Team(models.Model):
     name = models.CharField(max_length=100)
+    wins = models.IntegerField(default=0)
+    losses = models.IntegerField(default=0)
+    ties = models.IntegerField(default=0)
+    games_played = models.IntegerField(default=0)
+    players = models.ManyToManyField(Player, related_name='teams', blank=True)
 
     class Meta:
         ordering = ["name"]

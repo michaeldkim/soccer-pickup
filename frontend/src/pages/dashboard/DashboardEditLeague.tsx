@@ -41,7 +41,7 @@ const DashboardEditLeague: React.FC = () => {
 
   const editLeague = (id: number) => {
     api
-      .put(`/api/leagues/edit/${id}/`)
+      .put(`/api/leagues/${id}/edit`)
       .then((res) => {
         if (res.status === 204) alert("League updated!");
         else alert("Failed to update League")
@@ -60,7 +60,7 @@ const DashboardEditLeague: React.FC = () => {
 
   const deleteLeague = (id: number) => {
     api
-      .delete(`/api/leagues/delete/${id}/`)
+      .delete(`/api/leagues/${id}/delete`)
       .then((res) => {
         if (res.status === 204) alert("League deleted");
         else alert("Failed to make League")

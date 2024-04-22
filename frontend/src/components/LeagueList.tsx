@@ -1,4 +1,4 @@
-import { DeleteModal, EditModal, OptionsButton } from '../components'
+import { OptionsButton } from '../components'
 import { useState } from 'react'
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/20/solid';
 import { Transition } from '@headlessui/react';
