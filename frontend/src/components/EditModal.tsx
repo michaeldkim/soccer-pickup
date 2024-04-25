@@ -81,87 +81,99 @@ export default function EditModal({ isOpen, onClose, league, onUpdate }: EditMod
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                            <Dialog.Panel className="w-full max-w-fit transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                                 <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
                                     Edit League
                                 </Dialog.Title>
+
                                 <form onSubmit={handleSubmit} className="flex flex-col">
-                                    <div className="p-4 flex justify-between">
-                                        <label htmlFor='title'>Title:</label>
-                                        <input
-                                            type="text"
-                                            id="title"
-                                            name="title"
-                                            onChange={(e) => setTitle(e.target.value)}
-                                            value={title}
-                                        />
-                                    </div>
-                                    <div className="p-4 flex justify-between">
-                                        <label htmlFor='content'>Content:</label>
-                                        <textarea
-                                            id="content"
-                                            name="content"
-                                            onChange={(e) => setContent(e.target.value)}
-                                        ></textarea>
-                                    </div>
-                                    <div className="p-4 flex justify-between">
-                                        <label htmlFor='max_teams'>Max Teams:</label>
-                                        <input
-                                            type="number"
-                                            id="max_teams"
-                                            name="max_teams"
-                                            onChange={(e) => setMaxTeams(parseInt(e.target.value, 10) || 0)}
-                                            value={maxTeams}
-                                        />
-                                    </div>
-                                    <div className="p-4 flex justify-between">
-                                        <label htmlFor='location'>Location:</label>
-                                        <input
-                                            type="text"
-                                            id="location"
-                                            name="location"
-                                            onChange={(e) => setLocation(e.target.value)}
-                                            value={location}
-                                        />
-                                    </div>
-                                    <div className="p-4 flex justify-between">
-                                        <label htmlFor='location'>Game Day:</label>
-                                        <input
-                                            type="text"
-                                            id="game_day"
-                                            name="game_day"
-                                            onChange={(e) => setGameDay(e.target.value)}
-                                            value={gameDay}
-                                        />
-                                    </div>
-                                    <div className="p-4 flex justify-between">
-                                        <label htmlFor='game_time'>Game Time:</label>
-                                        <input
-                                            type="time"
-                                            id="game_time"
-                                            name="game_time"
-                                            onChange={(e) => setGameTime(e.target.value)}
-                                            value={gameTime}
-                                        />
-                                    </div>
-                                    <div className="p-4 flex justify-between">
-                                        <label htmlFor='game_date'>League Start Date:</label>
-                                        <input
-                                            type="date"
-                                            id="game_date"
-                                            name="game_date"
-                                            onChange={(e) => setLeagueStartDate(new Date(e.target.value))}
-                                            value={toISODateString(leagueStartDate)}
-                                        />
-                                    </div>
-                                    <div className="p-4 flex justify-between">
-                                        TEAMS
-                                        {teams.map(team => (
-                                            <div key={team.id}>
-                                                {team.name}
-                                                <button onClick={() => handleRemoveTeam(team.id)}>Remove</button>
+                                    <div className='flex flex-row'>
+                                        <div className='flex flex-col'>
+                                            <div className="p-4 flex justify-between">
+                                                <label htmlFor='title'>Title:</label>
+                                                <input
+                                                    type="text"
+                                                    id="title"
+                                                    name="title"
+                                                    onChange={(e) => setTitle(e.target.value)}
+                                                    value={title}
+                                                />
                                             </div>
-                                        ))}
+                                            <div className="p-4 flex justify-between">
+                                                <label htmlFor='content'>Content:</label>
+                                                <textarea
+                                                    id="content"
+                                                    name="content"
+                                                    onChange={(e) => setContent(e.target.value)}
+                                                ></textarea>
+                                            </div>
+                                            <div className="p-4 flex justify-between">
+                                                <label htmlFor='max_teams'>Max Teams:</label>
+                                                <input
+                                                    type="number"
+                                                    id="max_teams"
+                                                    name="max_teams"
+                                                    onChange={(e) => setMaxTeams(parseInt(e.target.value, 10) || 0)}
+                                                    value={maxTeams}
+                                                />
+                                            </div>
+                                            <div className="p-4 flex justify-between">
+                                                <label htmlFor='location'>Location:</label>
+                                                <input
+                                                    type="text"
+                                                    id="location"
+                                                    name="location"
+                                                    onChange={(e) => setLocation(e.target.value)}
+                                                    value={location}
+                                                />
+                                            </div>
+                                            <div className="p-4 flex justify-between">
+                                                <label htmlFor='location'>Game Day:</label>
+                                                <input
+                                                    type="text"
+                                                    id="game_day"
+                                                    name="game_day"
+                                                    onChange={(e) => setGameDay(e.target.value)}
+                                                    value={gameDay}
+                                                />
+                                            </div>
+                                            <div className="p-4 flex justify-between">
+                                                <label htmlFor='game_time'>Game Time:</label>
+                                                <input
+                                                    type="time"
+                                                    id="game_time"
+                                                    name="game_time"
+                                                    onChange={(e) => setGameTime(e.target.value)}
+                                                    value={gameTime}
+                                                />
+                                            </div>
+                                            <div className="p-4 flex justify-between">
+                                                <label htmlFor='game_date'>League Start Date:</label>
+                                                <input
+                                                    type="date"
+                                                    id="game_date"
+                                                    name="game_date"
+                                                    onChange={(e) => setLeagueStartDate(new Date(e.target.value))}
+                                                    value={toISODateString(leagueStartDate)}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className='flex flex-col'>
+                                            <h1>TEAMS: </h1>
+                                            <div className="p-4 flex justify-between">
+                                                {teams.length > 0 ? (
+                                                    teams.map(team => (
+                                                        <div key={team.id}>
+                                                            {team.name}
+                                                            <button onClick={() => handleRemoveTeam(team.id)}>Remove</button>
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <p>No teams are in this league.</p>
+                                                )}
+
+                                            </div>
+                                        </div>
                                     </div>
                                     <div className="mt-4 px-4 pt-4 flex justify-between">
                                         <button

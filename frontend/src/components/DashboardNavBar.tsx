@@ -6,10 +6,10 @@ const DashboardNavBar: React.FC = () => {
   const [openLeagues, setOpenLeagues] = useState(false);
 
   const leaguesSubTabs = [
-    { name: 'League Schedule', to: '/dashboard/league/schedule' },
-    { name: 'League Standings', to: '/dashboard/league/standings' },
-    { name: 'Create a League', to: '/dashboard/leagues/create'},
-    { name: 'Edit a League', to: '/dashboard/leagues/edit'},
+    { name: 'League Schedule', to: '/dashboard/league/schedule/' },
+    { name: 'League Standings', to: '/dashboard/league/standings/' },
+    { name: 'Create a League', to: '/dashboard/leagues/create/'},
+    { name: 'Edit a League', to: '/dashboard/leagues/edit/'},
   ];
 
   return (

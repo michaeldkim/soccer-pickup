@@ -44,7 +44,7 @@ function App() {
             }
           />
           <Route 
-            path="/dashboard/leagues/create"
+            path="/dashboard/leagues/create/"
             element={
               <ProtectedRoute>
                 <DashboardCreateLeague />
@@ -52,7 +52,7 @@ function App() {
             }
           />
           <Route 
-            path="/dashboard/leagues/edit"
+            path="/dashboard/leagues/edit/"
             element={
               <ProtectedRoute>
                 <DashboardEditLeague />
