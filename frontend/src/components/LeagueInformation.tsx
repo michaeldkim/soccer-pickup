@@ -1,23 +1,12 @@
-import { OptionsButton } from '../components'
+import { OptionsButton } from '.'
 import { useState } from 'react'
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/20/solid';
 import { Transition } from '@headlessui/react';
-import { Team, League } from '../types/types';
+import { League } from '../types/types';
 
-interface LeagueProps {
-    league: {
-        id: number;
-        title: string;
-        content: string;
-        max_teams: number;
-        location: string;
-        game_time: string;
-        league_start_date: Date;
-        game_day: string;
-        teams: Team[];
-    };
-    onEdit: (id: number, updatedLeague : League) => void;
-    onDelete: (id: number) => void;
+interface LeagueInformationProps {
+    league: League;
+    refreshLeagues: () => void;
 }
 
 enum DaysOfWeek {
@@ -63,7 +52,7 @@ function formatDate(dateInput: string | Date): string {
     return date.toLocaleDateString('en-US', options);
 }
 
-function LeagueList({ league, onEdit, onDelete }: LeagueProps) {
+const LeagueInformation: React.FC<LeagueInformationProps> = ({league, refreshLeagues}) => {
     const [isOpen, setIsOpen] = useState(false);
     const formattedDate = formatDate(league.league_start_date);
 
@@ -75,7 +64,7 @@ function LeagueList({ league, onEdit, onDelete }: LeagueProps) {
                     {league.title}
                     {isOpen ? <ChevronUpIcon className="w-5 h-5" /> : <ChevronDownIcon className="w-5 h-5" />}
                 </h3>
-                <OptionsButton league={league} onEdit={() => onEdit(league.id, league)} onDelete={() => onDelete(league.id)} />
+                <OptionsButton league={league} refreshLeagues={refreshLeagues}/>
             </div>
 
             <Transition
@@ -113,4 +102,4 @@ function LeagueList({ league, onEdit, onDelete }: LeagueProps) {
     );
 }
 
-export default LeagueList;
+export default LeagueInformation;

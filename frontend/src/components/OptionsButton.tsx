@@ -5,25 +5,22 @@ import DeleteModal from './DeleteModal';
 import { League } from '../types/types';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
-
-
-// Assuming League is imported from '../types/types'
+import api from "../api";
+import axios from "axios";
 
 interface OptionsButtonProps {
-    league: League; // Now we're expecting a league prop
-    onEdit: (id: number, updatedLeague: League) => void;
-    onDelete: (id: number) => void;
+    league: League;
+    refreshLeagues: () => void;
 }
 
 const OptionsButton: React.FC<OptionsButtonProps> = ({
     league,
-    onEdit,
-    onDelete
+    refreshLeagues,
 }) => {
 
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     // Instead of undefined onEdit and onDelete, now using provided props
     const handleEdit = () => {
@@ -34,6 +31,45 @@ const OptionsButton: React.FC<OptionsButtonProps> = ({
         setIsDeleteModalOpen(true);// Assuming you want to call onDeleteConfirm here
     };
 
+    const deleteLeague = (id: number) => {
+        api
+            .delete(`/api/leagues/${id}/delete/`)
+            .then((res) => {
+                if (res.status === 204) alert("League deleted");
+                else alert("Failed to make League");
+                refreshLeagues();
+            })
+            .catch((error) => {
+                if (axios.isAxiosError(error)) {
+                    // If the error is an Axios error, you can get the detailed request and response.
+                    alert(`Error: ${error.response?.status} - ${error.response?.statusText}`);
+                } else {
+                    // If it's not an Axios error, it might be a more systemic issue (network failure, etc.)
+                    alert(error);
+                }
+            })
+    }
+
+    const editLeague = (id: number, updatedLeague: League) => {
+        api
+            .patch(`/api/leagues/${id}/edit/`, {league: updatedLeague})
+            .then((res) => {
+                console.log(res);
+                if (res.status === 204) alert("League updated!");
+                else alert("Failed to update League");
+                refreshLeagues();
+            })
+            .catch((error) => {
+                if (axios.isAxiosError(error)) {
+                    // If the error is an Axios error, you can get the detailed request and response.
+                    alert(`Error: ${error.response?.status} - ${error.response?.statusText}`);
+                } else {
+                    // If it's not an Axios error, it might be a more systemic issue (network failure, etc.)
+                    alert(error);
+                }
+            })
+    };
+
     return (
         <div>
             <div className='top-16 w-56 text-right'>
@@ -41,14 +77,14 @@ const OptionsButton: React.FC<OptionsButtonProps> = ({
                     <div>
                         <Menu.Button onClick={() => setIsOpen(!isOpen)} className="inline-flex w-full justify-center rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
                             Options
-                            {isOpen ?<ChevronUpIcon
+                            {isOpen ? <ChevronUpIcon
                                 className="-mr-1 ml-2 h-5 w-5 text-violet-200 hover:text-violet-100"
                                 aria-hidden="true"
                             /> : <ChevronDownIcon
                                 className="-mr-1 ml-2 h-5 w-5 text-violet-200 hover:text-violet-100"
                                 aria-hidden="true"
                             />}
-                            
+
                         </Menu.Button>
                     </div>
                     <Transition
@@ -67,7 +103,7 @@ const OptionsButton: React.FC<OptionsButtonProps> = ({
                                         <button
                                             className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
                                                 } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                                onClick={handleEdit}
+                                            onClick={handleEdit}
                                         >
                                             {active ? (
                                                 <EditActiveIcon
@@ -91,7 +127,7 @@ const OptionsButton: React.FC<OptionsButtonProps> = ({
                                         <button
                                             className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
                                                 } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                                onClick={handleDelete}
+                                            onClick={handleDelete}
                                         >
                                             {active ? (
                                                 <DeleteActiveIcon
@@ -113,10 +149,17 @@ const OptionsButton: React.FC<OptionsButtonProps> = ({
                     </Transition>
                 </Menu>
             </div>
-
             {/* Modals are now controlled by the state hooks and callbacks within this component */}
-            <EditModal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} league={league} onUpdate={() => onEdit(league.id, league)} />
-            <DeleteModal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} onConfirm={() => onDelete(league.id)} />
+            <EditModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                league={league}
+                onConfirm={(updatedLeague) => {
+                    editLeague(league.id, updatedLeague);
+                    setIsEditModalOpen(false); // Close the modal on confirm
+                }}
+            />
+            <DeleteModal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} onConfirm={() => deleteLeague(league.id)} />
         </div>
     );
 }

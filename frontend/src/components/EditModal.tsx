@@ -5,11 +5,11 @@ import { League, Team } from '../types/types';
 interface EditModalProps {
     isOpen: boolean;
     onClose: () => void;
+    onConfirm: (updatedLeague: League) => void;
     league: League;
-    onUpdate: (league: League) => void;
 }
 
-export default function EditModal({ isOpen, onClose, league, onUpdate }: EditModalProps) {
+export default function EditModal({ isOpen, league, onClose, onConfirm }: EditModalProps) {
     // Local state for form inputs, initialized from league props
     const [title, setTitle] = useState<string>(league.title);
     const [content, setContent] = useState<string>(league.content);
@@ -22,10 +22,10 @@ export default function EditModal({ isOpen, onClose, league, onUpdate }: EditMod
     const [newTeamName, setNewTeamName] = useState<string>('');
 
     // Handler for when the form is submitted
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const updatedLeague = {
+        const updatedLeague: League = {
             ...league,
             title,
             content,
@@ -36,7 +36,8 @@ export default function EditModal({ isOpen, onClose, league, onUpdate }: EditMod
             game_day: gameDay,
             teams: teams,
         };
-        onUpdate(updatedLeague);
+        console.log(updatedLeague);
+        onConfirm(updatedLeague);
         onClose();
     };
 
@@ -46,16 +47,11 @@ export default function EditModal({ isOpen, onClose, league, onUpdate }: EditMod
         return isoDate;
     }
 
-    // Handler for adding a new team (you need to define the logic for this)
     const handleAddTeam = () => {
         if (newTeamName.trim() === '') {
             alert('Please enter a team name.');
             return;
         }
-
-        // Add a new team to the local teams state
-        // Assuming each team has an ID, you'll need to generate a unique ID for the new team.
-        // For simplicity, here we're just using the current timestamp as a pseudo-unique ID.
         const newTeam = {
             id: Date.now(),
             name: newTeamName,
@@ -65,17 +61,10 @@ export default function EditModal({ isOpen, onClose, league, onUpdate }: EditMod
             games_played: 0,
             players: [],
         };
-
-        // Add the new team to the list of teams
         setTeams([...teams, newTeam]);
-
-        console.log(teams)
-
-        // Clear the new team name input box after adding
         setNewTeamName('');
     };
 
-    // Handler for removing a team
     const handleRemoveTeam = (teamId: number) => {
         setTeams(teams.filter(team => team.id !== teamId));
     };
@@ -208,10 +197,11 @@ export default function EditModal({ isOpen, onClose, league, onUpdate }: EditMod
                                                     onChange={(e) => setNewTeamName(e.target.value)}
                                                 />
                                                 <button
+                                                    type='button'
                                                     onClick={handleAddTeam}
                                                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded"
                                                 >
-                                                    Add Team
+                                                Add Team
                                                 </button>
                                             </div>
                                         </div>
@@ -220,7 +210,7 @@ export default function EditModal({ isOpen, onClose, league, onUpdate }: EditMod
                                         <button
                                             type="submit"
                                             className="inline-flex justify-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
-                                        >Update</button>
+                                        >Save Changes</button>
                                         <button
                                             type="button"
                                             className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
