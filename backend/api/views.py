@@ -28,7 +28,6 @@ class TeamDelete(generics.DestroyAPIView):
     serializer_class = TeamSerializer
     permission_classes = [IsAuthenticated]
 
-
 class PlayerListCreate(generics.ListCreateAPIView):
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
@@ -64,7 +63,7 @@ class LeagueDelete(generics.DestroyAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return League.objects.filter(author=user) # You can get notes only written by you and no one else
+        return League.objects.filter(author=user)
     
 class LeagueEdit(generics.UpdateAPIView):
     serializer_class = LeagueSerializer

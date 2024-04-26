@@ -2,6 +2,7 @@ import { OptionsButton } from '../components'
 import { useState } from 'react'
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/20/solid';
 import { Transition } from '@headlessui/react';
+import { Team, League } from '../types/types';
 
 interface LeagueProps {
     league: {
@@ -13,9 +14,9 @@ interface LeagueProps {
         game_time: string;
         league_start_date: Date;
         game_day: string;
-        teams: { id: number; name: string; }[];
+        teams: Team[];
     };
-    onEdit: (id: number) => void;
+    onEdit: (id: number, updatedLeague : League) => void;
     onDelete: (id: number) => void;
 }
 
@@ -74,7 +75,7 @@ function LeagueList({ league, onEdit, onDelete }: LeagueProps) {
                     {league.title}
                     {isOpen ? <ChevronUpIcon className="w-5 h-5" /> : <ChevronDownIcon className="w-5 h-5" />}
                 </h3>
-                <OptionsButton league={league} onEdit={() => onEdit(league.id)} onDelete={() => onDelete(league.id)} />
+                <OptionsButton league={league} onEdit={() => onEdit(league.id, league)} onDelete={() => onDelete(league.id)} />
             </div>
 
             <Transition

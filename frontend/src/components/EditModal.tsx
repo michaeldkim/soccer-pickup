@@ -19,6 +19,7 @@ export default function EditModal({ isOpen, onClose, league, onUpdate }: EditMod
     const [leagueStartDate, setLeagueStartDate] = useState<Date>(league.league_start_date);
     const [gameDay, setGameDay] = useState<string>(league.game_day);
     const [teams, setTeams] = useState<Team[]>(league.teams);
+    const [newTeamName, setNewTeamName] = useState<string>('');
 
     // Handler for when the form is submitted
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -46,8 +47,32 @@ export default function EditModal({ isOpen, onClose, league, onUpdate }: EditMod
     }
 
     // Handler for adding a new team (you need to define the logic for this)
-    const handleAddTeam = (newTeam: Team) => {
+    const handleAddTeam = () => {
+        if (newTeamName.trim() === '') {
+            alert('Please enter a team name.');
+            return;
+        }
+
+        // Add a new team to the local teams state
+        // Assuming each team has an ID, you'll need to generate a unique ID for the new team.
+        // For simplicity, here we're just using the current timestamp as a pseudo-unique ID.
+        const newTeam = {
+            id: Date.now(),
+            name: newTeamName,
+            wins: 0,
+            loses: 0,
+            ties: 0,
+            games_played: 0,
+            players: [],
+        };
+
+        // Add the new team to the list of teams
         setTeams([...teams, newTeam]);
+
+        console.log(teams)
+
+        // Clear the new team name input box after adding
+        setNewTeamName('');
     };
 
     // Handler for removing a team
@@ -105,6 +130,7 @@ export default function EditModal({ isOpen, onClose, league, onUpdate }: EditMod
                                                     id="content"
                                                     name="content"
                                                     onChange={(e) => setContent(e.target.value)}
+                                                    value={content}
                                                 ></textarea>
                                             </div>
                                             <div className="p-4 flex justify-between">
@@ -172,6 +198,21 @@ export default function EditModal({ isOpen, onClose, league, onUpdate }: EditMod
                                                     <p>No teams are in this league.</p>
                                                 )}
 
+                                            </div>
+                                            <div className="mt-4 flex gap-2 items-center">
+                                                <input
+                                                    type="text"
+                                                    placeholder="New Team Name"
+                                                    className="border border-gray-300 px-2 py-1 rounded-md"
+                                                    value={newTeamName}
+                                                    onChange={(e) => setNewTeamName(e.target.value)}
+                                                />
+                                                <button
+                                                    onClick={handleAddTeam}
+                                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded"
+                                                >
+                                                    Add Team
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

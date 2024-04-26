@@ -3,6 +3,7 @@ import api from "../../api";
 import axios from "axios"
 import LeagueList from "../../components/LeagueList"
 import DashboardNavBar from '../../components/DashboardNavBar';
+import { Team } from '../../types/types';
 
 interface League {
   id: number;
@@ -13,13 +14,13 @@ interface League {
   game_time: string;
   league_start_date: Date;
   game_day: string;
-  teams: { id: number; name: string; }[];
+  teams: Team[];
 }
 
 const DashboardEditLeague: React.FC = () => {
   const [leagues, setLeagues] = useState<League[]>([])
 
-  useEffect(() => {
+  useEffect(() => { 
     getLeagues();
   }, [])
 
@@ -39,9 +40,9 @@ const DashboardEditLeague: React.FC = () => {
       })
   }
 
-  const editLeague = (id: number) => {
+  const editLeague = (id: number, updatedLeague: League) => {
     api
-      .put(`/api/leagues/${id}/edit/`)
+      .patch(`/api/leagues/${id}/edit/`, updatedLeague)
       .then((res) => {
         if (res.status === 204) alert("League updated!");
         else alert("Failed to update League")
@@ -85,7 +86,7 @@ const DashboardEditLeague: React.FC = () => {
       <div className='h-screen px-5 w-screen overflow-y-scroll'>
         <h2 className='text-4xl font-bold my-2'>LEAGUES</h2>
         {leagues.map((league) => (
-          <LeagueList league={league} onEdit={editLeague} onDelete={deleteLeague} key={league.id} />
+          <LeagueList league={league} onEdit={(leagueId, updatedLeague) => editLeague(leagueId, updatedLeague)} onDelete={deleteLeague} key={league.id} />
         ))}
       </div>
     </div>

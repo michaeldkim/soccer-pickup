@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from "axios"
 import DashboardNavBar from '../../components/DashboardNavBar';
 import api from '../../api';
+import { Team } from '../../types/types';
 
 interface League {
     id: number;
@@ -12,11 +13,10 @@ interface League {
     game_time: string;
     league_start_date: Date;
     game_day: string;
-    teams: { id: number; name: string; }[];
+    teams: Team[];
 }
 
 const DashboardCreateLeague: React.FC = () => {
-    const [leagues, setLeagues] = useState<League[]>([])
     const [content, setContent] = useState<string>("")
     const [title, setTitle] = useState<string>("")
     const [location, setLocation] = useState<string>("");
@@ -29,7 +29,6 @@ const DashboardCreateLeague: React.FC = () => {
         api
             .get("/api/leagues/")
             .then((res) => res.data)
-            .then((data) => { setLeagues(data); console.log(data) })
             .catch((error) => {
                 if (axios.isAxiosError(error)) {
                     // If the error is an Axios error, you can get the detailed request and response.
@@ -42,7 +41,7 @@ const DashboardCreateLeague: React.FC = () => {
     }
 
     const createLeague = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+        e.preventDefault();
 
         const newLeague = {
             title,
@@ -52,7 +51,9 @@ const DashboardCreateLeague: React.FC = () => {
             game_day,
             game_time,
             league_start_date,
+            teams: [] as Team[],
         }
+        
         api
             .post("/api/leagues/", newLeague)
             .then((res) => {

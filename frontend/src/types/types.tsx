@@ -1,6 +1,15 @@
+export interface Player {
+    name: string;
+}
+
 export interface Team {
     id: number;
     name: string;
+    wins: number;
+    loses: number;
+    ties: number;
+    games_played: number;
+    players: Player[]
 }
 
 export interface League {
