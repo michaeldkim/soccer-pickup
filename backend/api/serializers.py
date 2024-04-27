@@ -8,7 +8,7 @@ class PlayerSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 class TeamSerializer(serializers.ModelSerializer):
-    players = PlayerSerializer(many=True, read_only=True)
+    players = PlayerSerializer(many=True, required=False)
 
     class Meta:
         model = Team
@@ -31,7 +31,7 @@ class LeagueUserSerializer(serializers.ModelSerializer):
         return user
 
 class LeagueSerializer(serializers.ModelSerializer):
-    teams = TeamSerializer(many=True, read_only=True)
+    teams = TeamSerializer(many=True, required=False)
 
     class Meta:
         model = League

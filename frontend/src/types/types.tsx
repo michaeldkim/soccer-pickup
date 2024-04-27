@@ -21,5 +21,5 @@ export interface League {
     game_time: string;
     league_start_date: Date;
     game_day: string;
-    teams: Team[]; // Use the Team interface here
+    teams: Team[];
 }

@@ -4,18 +4,6 @@ import DashboardNavBar from '../../components/DashboardNavBar';
 import api from '../../api';
 import { Team } from '../../types/types';
 
-interface League {
-    id: number;
-    title: string;
-    content: string;
-    max_teams: number;
-    location: string;
-    game_time: string;
-    league_start_date: Date;
-    game_day: string;
-    teams: Team[];
-}
-
 const DashboardCreateLeague: React.FC = () => {
     const [content, setContent] = useState<string>("")
     const [title, setTitle] = useState<string>("")

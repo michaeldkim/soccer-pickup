@@ -31,6 +31,7 @@ const DashboardEditLeague: React.FC = () => {
       .then((data) => { setLeagues(data); console.log(data) })
       .catch((error) => {
         if (axios.isAxiosError(error)) {
+          console.error("Patch request failed: ", error.response || error.message);
           // If the error is an Axios error, you can get the detailed request and response.
           alert(`Error: ${error.response?.status} - ${error.response?.statusText}`);
         } else {

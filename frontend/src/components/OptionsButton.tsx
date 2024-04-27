@@ -51,10 +51,11 @@ const OptionsButton: React.FC<OptionsButtonProps> = ({
     }
 
     const editLeague = (id: number, updatedLeague: League) => {
+        console.log("UPDATED", updatedLeague)
         api
-            .patch(`/api/leagues/${id}/edit/`, {league: updatedLeague})
+            .put(`/api/leagues/${id}/edit/`, updatedLeague)
             .then((res) => {
-                console.log(res);
+                console.log("RES", res);
                 if (res.status === 204) alert("League updated!");
                 else alert("Failed to update League");
                 refreshLeagues();

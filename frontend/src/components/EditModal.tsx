@@ -1,12 +1,22 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
-import { League, Team } from '../types/types';
+import { League, Team, Player } from '../types/types';
+import api from '../api';
 
 interface EditModalProps {
     isOpen: boolean;
     onClose: () => void;
     onConfirm: (updatedLeague: League) => void;
     league: League;
+}
+
+type NewTeamData = {
+    name: string;
+    wins: number;
+    loses: number;
+    ties: number;
+    games_played: number;
+    players: Player[],
 }
 
 export default function EditModal({ isOpen, league, onClose, onConfirm }: EditModalProps) {
@@ -24,7 +34,7 @@ export default function EditModal({ isOpen, league, onClose, onConfirm }: EditMo
     // Handler for when the form is submitted
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
+        console.log("TEAMS", teams)
         const updatedLeague: League = {
             ...league,
             title,
@@ -36,7 +46,7 @@ export default function EditModal({ isOpen, league, onClose, onConfirm }: EditMo
             game_day: gameDay,
             teams: teams,
         };
-        console.log(updatedLeague);
+        console.log("UPDATED LEAGUE", updatedLeague);
         onConfirm(updatedLeague);
         onClose();
     };
@@ -47,22 +57,37 @@ export default function EditModal({ isOpen, league, onClose, onConfirm }: EditMo
         return isoDate;
     }
 
-    const handleAddTeam = () => {
+    const createTeam = async (teamData: NewTeamData): Promise<Team> => {
+        try {
+            const response = await api.post<Team>("/api/teams/", teamData);
+            return response.data;
+        } catch (error) {
+            console.error("Failed to create a team.", error);
+            throw(error);
+        }
+    }
+    const handleAddTeam = async () => {
         if (newTeamName.trim() === '') {
             alert('Please enter a team name.');
             return;
         }
-        const newTeam = {
-            id: Date.now(),
+        const newTeamData: NewTeamData = {
             name: newTeamName,
             wins: 0,
             loses: 0,
             ties: 0,
             games_played: 0,
-            players: [],
+            players: [] as Player[],
         };
-        setTeams([...teams, newTeam]);
-        setNewTeamName('');
+        
+        try {
+            const createdTeam = await createTeam(newTeamData);
+            setTeams([...teams, createdTeam])
+            setNewTeamName('');
+        } catch (error) {
+            console.error("Failed to add team.", error);
+            throw(error);
+        }
     };
 
     const handleRemoveTeam = (teamId: number) => {
