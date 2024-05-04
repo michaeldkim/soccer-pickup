@@ -13,10 +13,12 @@ class TeamListCreate(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
+        league_id = self.request.data.get('league_id')  # You need to send 'league_id' in your POST request
+        league = League.objects.get(id=league_id)  # Ensure the league exists and the user has access to it
         if serializer.is_valid():
-            serializer.save(author=self.request.user)
+            serializer.save(league=league)
         else:
-            print(serializer.errors)
+            print(serializer.errors) 
 
 class TeamUpdate(generics.UpdateAPIView):
     queryset = Team.objects.all()

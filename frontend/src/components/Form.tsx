@@ -35,7 +35,6 @@ const Form: React.FC<FormProps> = ({ route, method }) => {
             if (isLogin) {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-                console.log("LOGGING IN AS:" + payload.first_name + firstName)
                 navigate("/dashboard")
             } else {
                 navigate("/login")

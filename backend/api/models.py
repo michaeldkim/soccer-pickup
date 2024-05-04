@@ -55,7 +55,6 @@ class LeagueUser(AbstractBaseUser):
     def is_staff(self):
         return self.is_admin
 
-
 class Player(models.Model):
     name = models.CharField(max_length=100)
 
