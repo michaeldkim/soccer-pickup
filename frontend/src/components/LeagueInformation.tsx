@@ -86,9 +86,9 @@ const LeagueInformation: React.FC<LeagueInformationProps> = ({league, refreshLea
                     <p><strong>Game Day:</strong> {getFullDayName(league.game_day)}</p>
                     <div>
                         <strong>Teams:</strong>
-                        {league.teams.length > 0 ? (
+                        {league.participating_teams.length > 0 ? (
                             <ul>
-                                {league.teams.map((team) => (
+                                {league.participating_teams.map((team) => (
                                     <li key={team.id}>{team.name}</li>
                                 ))}
                             </ul>

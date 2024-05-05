@@ -1,4 +1,5 @@
 export interface Player {
+    id: number;
     name: string;
 }
 
@@ -9,7 +10,8 @@ export interface Team {
     loses: number;
     ties: number;
     games_played: number;
-    players: Player[]
+    players: Player[];
+    associated_league?: number;
 }
 
 export interface League {
@@ -21,5 +23,5 @@ export interface League {
     game_time: string;
     league_start_date: Date;
     game_day: string;
-    teams: Team[];
+    participating_teams: Team[];
 }

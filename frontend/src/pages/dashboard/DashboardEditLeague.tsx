@@ -14,7 +14,7 @@ interface League {
   game_time: string;
   league_start_date: Date;
   game_day: string;
-  teams: Team[];
+  participating_teams: Team[];
 }
 
 const DashboardEditLeague: React.FC = () => {

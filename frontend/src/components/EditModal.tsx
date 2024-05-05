@@ -28,7 +28,7 @@ export default function EditModal({ isOpen, league, onClose, onConfirm }: EditMo
     const [gameTime, setGameTime] = useState<string>(league.game_time);
     const [leagueStartDate, setLeagueStartDate] = useState<Date>(league.league_start_date);
     const [gameDay, setGameDay] = useState<string>(league.game_day);
-    const [teams, setTeams] = useState<Team[]>(league.teams);
+    const [teams, setTeams] = useState<Team[]>(league.participating_teams);
     const [newTeamName, setNewTeamName] = useState<string>('');
 
     // Handler for when the form is submitted
@@ -44,7 +44,7 @@ export default function EditModal({ isOpen, league, onClose, onConfirm }: EditMo
             game_time: gameTime,
             league_start_date: new Date(leagueStartDate),
             game_day: gameDay,
-            teams: teams,
+            participating_teams: teams,
         };
         console.log("UPDATED LEAGUE", updatedLeague);
         onConfirm(updatedLeague);

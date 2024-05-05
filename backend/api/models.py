@@ -70,6 +70,7 @@ class Team(models.Model):
     losses = models.IntegerField(default=0)
     ties = models.IntegerField(default=0)
     games_played = models.IntegerField(default=0)
+    associated_league = models.ForeignKey('League', related_name='teams', on_delete=models.CASCADE, null=True)
     players = models.ManyToManyField(Player, related_name='teams', blank=True)
 
     class Meta:
@@ -101,7 +102,7 @@ class League(models.Model):
     game_time = models.TimeField(default=time(18,00))
     league_start_date = models.DateField(default=date.today)
     author = models.ForeignKey(LeagueUser, on_delete=models.CASCADE, related_name="leagues")
-    teams = models.ManyToManyField(Team, related_name="leagues", blank=True)
+    participating_teams = models.ManyToManyField(Team, related_name="participating_leagues", blank=True)
 
     def __str__(self):
         return self.title

@@ -8,11 +8,12 @@ class PlayerSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 class TeamSerializer(serializers.ModelSerializer):
+    associated_league_id = serializers.PrimaryKeyRelatedField(queryset=League.objects.all(), source='associated_league', write_only=True)
     players = PlayerSerializer(many=True, required=False)
 
     class Meta:
         model = Team
-        fields = ['id', 'name', 'wins', 'losses', 'ties', 'games_played', 'players']
+        fields = ['id', 'name', 'wins', 'losses', 'ties', 'games_played', 'associated_league', 'players']
 
 class LeagueUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -31,9 +32,9 @@ class LeagueUserSerializer(serializers.ModelSerializer):
         return user
 
 class LeagueSerializer(serializers.ModelSerializer):
-    teams = TeamSerializer(many=True, required=False)
+    participating_teams = TeamSerializer(many=True, required=False)
 
     class Meta:
         model = League
-        fields = ['id', 'title', 'content', 'max_teams', 'location', 'game_day', 'game_time', 'league_start_date', 'teams']
+        fields = ['id', 'title', 'content', 'max_teams', 'location', 'game_day', 'game_time', 'league_start_date', 'participating_teams']
         extra_kwargs = {"author": {"read_only": True}}
